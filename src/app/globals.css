@@ -1,0 +1,167 @@
+@import 'tailwindcss';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ---------------------------------------------------------------------------
+ * Design tokens
+ * Warm "paper and ink" neutrals with a single signal-orange accent used
+ * sparingly. Every colour in the UI resolves to one of these variables.
+ * ------------------------------------------------------------------------- */
+:root {
+  --canvas: #f7f7f4;
+  --surface: #ffffff;
+  --surface-muted: #efeee9;
+  --ink: #141413;
+  --ink-muted: #57564f;
+  --ink-subtle: #6b6a63;
+  --line: #e3e2dc;
+  --line-strong: #cfcec6;
+  --accent: #c2410c;
+  --accent-soft: #fbeadf;
+  --positive: #15803d;
+  --grid-dot: rgb(20 20 19 / 0.09);
+  --shadow-card: 0 1px 0 rgb(20 20 19 / 0.03), 0 12px 32px -18px rgb(20 20 19 / 0.18);
+  color-scheme: light;
+}
+
+.dark {
+  --canvas: #0d0d0c;
+  --surface: #151514;
+  --surface-muted: #1c1c1a;
+  --ink: #ecebe6;
+  --ink-muted: #a6a59e;
+  --ink-subtle: #7d7c75;
+  --line: #262623;
+  --line-strong: #363631;
+  --accent: #fb8a4f;
+  --accent-soft: rgb(251 138 79 / 0.12);
+  --positive: #4ade80;
+  --grid-dot: rgb(236 235 230 / 0.07);
+  --shadow-card: 0 1px 0 rgb(0 0 0 / 0.4), 0 16px 40px -20px rgb(0 0 0 / 0.8);
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-ink-subtle: var(--ink-subtle);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-positive: var(--positive);
+
+  --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, 'SFMono-Regular', Menlo, monospace;
+  --font-serif: var(--font-instrument-serif), ui-serif, Georgia, serif;
+
+  --shadow-card: var(--shadow-card);
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
+  body {
+    @apply bg-canvas text-ink font-sans antialiased;
+    font-feature-settings: 'ss01', 'cv11';
+  }
+
+  ::selection {
+    background: var(--accent);
+    color: var(--canvas);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  [id] {
+    scroll-margin-top: 5rem;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+ * Motion
+ * Content is always visible without JavaScript. The `js` class (set inline
+ * before paint) opts elements into reveal-on-scroll; reduced motion opts out.
+ * ------------------------------------------------------------------------- */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes ping-soft {
+  75%,
+  100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .animate-rise {
+    animation: rise 0.8s var(--ease-out-soft) both;
+    animation-delay: var(--delay, 0ms);
+  }
+
+  .animate-ping-soft {
+    animation: ping-soft 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+  }
+
+  .js [data-reveal] {
+    opacity: 0;
+    transform: translateY(18px);
+    transition:
+      opacity 0.7s var(--ease-out-soft),
+      transform 0.7s var(--ease-out-soft);
+    transition-delay: var(--delay, 0ms);
+  }
+
+  .js [data-reveal][data-visible] {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Dotted grid used as a quiet background texture. */
+.bg-dot-grid {
+  background-image: radial-gradient(var(--grid-dot) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
+/* Stretched link: makes a whole card clickable while keeping secondary links usable. */
+.stretched-link::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+}
+
+/* Applied for a single frame while the theme switches. */
+.theme-switching *,
+.theme-switching *::before,
+.theme-switching *::after {
+  transition: none !important;
+}
