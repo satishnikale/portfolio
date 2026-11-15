@@ -12,19 +12,27 @@ type Status =
   | { state: 'mailto' }
   | { state: 'error'; message: string };
 
-type Field = 'name' | 'email' | 'subject' | 'message';
+type Field = 'name' | 'email' | 'phone' | 'subject' | 'message';
 type Errors = Partial<Record<Field, string>>;
 
 const endpoint = process.env.NEXT_PUBLIC_CONTACT_FORM_ENDPOINT;
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+// Accepts local and international formats: +91 98765 43210, (020) 1234-5678, 9876543210.
+const PHONE_PATTERN = /^\+?[\d\s().-]+$/;
+
+function isValidPhone(value: string) {
+  const digits = value.replace(/\D/g, '').length;
+  return PHONE_PATTERN.test(value) && digits >= 7 && digits <= 15;
+}
 
 function validate(values: Record<Field, string>): Errors {
   const errors: Errors = {};
   if (!values.name) errors.name = 'Please tell me your name.';
   if (!values.email) errors.email = 'Please add an email so I can reply.';
   else if (!EMAIL_PATTERN.test(values.email)) errors.email = 'That email address doesn’t look right.';
+  if (!values.phone) errors.phone = 'Please add a mobile number.';
+  else if (!isValidPhone(values.phone)) errors.phone = 'That number doesn’t look right. Include the country code if outside India.';
   if (!values.subject) errors.subject = 'A short subject helps me prioritise.';
-  if (values.message.length < 10) errors.message = 'Please write at least a sentence or two.';
   return errors;
 }
 
@@ -34,12 +42,14 @@ const inputClasses =
 function FieldShell({
   id,
   label,
+  optional = false,
   error,
   children,
   className,
 }: {
   id: Field;
   label: string;
+  optional?: boolean;
   error?: string;
   children: ReactNode;
   className?: string;
@@ -48,6 +58,7 @@ function FieldShell({
     <div className={className}>
       <label htmlFor={id} className="mb-2 block text-sm font-medium">
         {label}
+        {optional ? <span className="ml-1.5 font-normal text-ink-subtle">(optional)</span> : null}
       </label>
       {children}
       {error ? (
@@ -70,6 +81,7 @@ export function ContactForm({ email }: { email: string }) {
     const values = {
       name: String(data.get('name') ?? '').trim(),
       email: String(data.get('email') ?? '').trim(),
+      phone: String(data.get('phone') ?? '').trim(),
       subject: String(data.get('subject') ?? '').trim(),
       message: String(data.get('message') ?? '').trim(),
     };
@@ -84,7 +96,8 @@ export function ContactForm({ email }: { email: string }) {
 
     // No backend configured: hand the drafted message to the visitor's mail client.
     if (!endpoint) {
-      const body = `${values.message}\n\n— ${values.name} (${values.email})`;
+      const signature = `— ${values.name}\n${values.email}\n${values.phone}`;
+      const body = values.message ? `${values.message}\n\n${signature}` : signature;
       window.location.href = `mailto:${email}?subject=${encodeURIComponent(values.subject)}&body=${encodeURIComponent(body)}`;
       setStatus({ state: 'mailto' });
       return;
@@ -133,7 +146,17 @@ export function ContactForm({ email }: { email: string }) {
           className={inputClasses}
         />
       </FieldShell>
-      <FieldShell id="subject" label="Subject" error={errors.subject} className="sm:col-span-2">
+      <FieldShell id="phone" label="Mobile number" error={errors.phone}>
+        <input
+          {...fieldProps('phone')}
+          type="tel"
+          autoComplete="tel"
+          inputMode="tel"
+          placeholder="+91 98765 43210"
+          className={inputClasses}
+        />
+      </FieldShell>
+      <FieldShell id="subject" label="Subject" error={errors.subject}>
         <input
           {...fieldProps('subject')}
           type="text"
@@ -141,7 +164,7 @@ export function ContactForm({ email }: { email: string }) {
           className={inputClasses}
         />
       </FieldShell>
-      <FieldShell id="message" label="Message" error={errors.message} className="sm:col-span-2">
+      <FieldShell id="message" label="Message" optional error={errors.message} className="sm:col-span-2">
         <textarea
           {...fieldProps('message')}
           rows={5}
