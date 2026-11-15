@@ -44,7 +44,7 @@ All copy lives in `src/content/`. Components never hardcode personal details.
 | Variable                            | Required | Purpose |
 | ----------------------------------- | -------- | ------- |
 | `NEXT_PUBLIC_SITE_URL`              | Yes, in production | Absolute URL used for canonical links, Open Graph, `sitemap.xml` and `robots.txt`. Defaults to `http://localhost:3000`. |
-| `NEXT_PUBLIC_CONTACT_FORM_ENDPOINT` | No       | Endpoint that accepts a JSON `POST` of `{ name, email, subject, message }`. |
+| `NEXT_PUBLIC_CONTACT_FORM_ENDPOINT` | No       | Endpoint that accepts a JSON `POST` of `{ name, email, phone, subject, message }` (`message` may be empty). |
 
 ### Contact form
 
