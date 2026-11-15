@@ -14,7 +14,7 @@ const getIsDark = () => document.documentElement.classList.contains('dark');
 
 export function ThemeToggle() {
   // The initial theme is applied by an inline script before paint; this only mirrors it.
-  const isDark = useSyncExternalStore(subscribe, getIsDark, () => false);
+  const isDark = useSyncExternalStore(subscribe, getIsDark, () => true);
 
   function toggle() {
     const root = document.documentElement;

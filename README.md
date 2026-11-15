@@ -78,9 +78,9 @@ src/
 
 ## Design system
 
-Tokens are CSS variables in `src/app/globals.css`, exposed to Tailwind as `canvas`, `surface`, `surface-muted`, `ink`, `ink-muted`, `ink-subtle`, `line`, `line-strong`, `accent`, `accent-soft` and `positive`. Dark mode swaps the variables under `.dark`; components never branch on theme.
+Tokens are CSS variables in `src/app/globals.css`, exposed to Tailwind as `canvas`, `surface`, `surface-muted`, `ink`, `ink-muted`, `ink-subtle`, `line`, `line-strong`, `accent`, `accent-soft` and `positive`. The site is dark by default; a visitor who picks light keeps it on later visits. Dark mode swaps the variables under `.dark`; components never branch on theme.
 
-Type: Geist (UI), Geist Mono (labels and metadata), Instrument Serif italic (sparing emphasis). Fonts are self-hosted through `next/font`.
+Type: Geist (UI), Geist Mono (labels and metadata), Instrument Serif italic (sparing emphasis). Font files are bundled in `src/app/fonts/` (SIL Open Font License) and loaded with `next/font/local`, so builds never need to reach Google Fonts.
 
 Motion is CSS-only and is disabled under `prefers-reduced-motion`. Content is fully visible without JavaScript.
 
