@@ -36,7 +36,7 @@ export const experience: Company[] = [
       {
         title: 'Software Engineer Intern',
         start: '2025-12',
-        end: '2026-06',
+        end: '2026-05',
         location: 'Pune, India',
         highlights: [
           'Contributed to full-stack development using React, Next.js, Node.js and TypeScript.',
