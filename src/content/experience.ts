@@ -1,17 +1,12 @@
 import type { Company } from './types';
 
-/*
- * VERIFY: The Founding Engineer start date below (March 2025) comes from the
- * portfolio brief. Your resume PDFs list "December 2025 – Present". Make the
- * two agree before publishing.
- */
 export const experience: Company[] = [
   {
     name: 'EzyEV Technologies Pvt. Ltd.',
     roles: [
       {
         title: 'Founding Engineer',
-        start: '2025-03',
+        start: '2026-06',
         end: 'present',
         location: 'Pune, India',
         summary:
@@ -40,8 +35,8 @@ export const experience: Company[] = [
       },
       {
         title: 'Software Engineer Intern',
-        start: '2024-12',
-        end: '2025-03',
+        start: '2025-12',
+        end: '2026-06',
         location: 'Pune, India',
         highlights: [
           'Contributed to full-stack development using React, Next.js, Node.js and TypeScript.',
