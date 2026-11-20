@@ -28,7 +28,7 @@ All copy lives in `src/content/`. Components never hardcode personal details.
 
 | File               | Contents                                                        |
 | ------------------ | --------------------------------------------------------------- |
-| `site.ts`          | Name, title, email, location, socials, nav, resume path, availability |
+| `site.ts`          | Name, title, email, location, socials, nav, resume Drive link, availability |
 | `about.ts`         | About paragraphs and focus areas                                |
 | `experience.ts`    | Companies, roles, dates, highlights, stack                      |
 | `projects.ts`      | Projects, links, highlights                                     |
@@ -37,7 +37,7 @@ All copy lives in `src/content/`. Components never hardcode personal details.
 
 **Projects.** A project gets a case-study page at `/projects/<slug>` automatically once it has at least one entry in `highlights`. Add `links.github` / `links.live` only once the URLs are confirmed; the buttons appear when the fields are set.
 
-**Resume.** Put your PDF at `public/Satish_Nikale_Resume.pdf` (or change `resumePath` in `site.ts`). Resume buttons in the header, hero and mobile menu appear only when that file exists at build time, so the site never links to a missing file.
+**Resume.** Upload your PDF to Google Drive, set sharing to "Anyone with the link", and paste the share link into `resumeDriveUrl` in `site.ts`. The header, hero and mobile menu then show "View resume" (opens Drive's preview) and "Download" (direct download). With the field empty, no resume buttons are shown.
 
 ## Environment variables
 

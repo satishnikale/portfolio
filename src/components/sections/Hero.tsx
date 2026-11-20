@@ -1,6 +1,7 @@
-import { ArrowDown, Download } from 'lucide-react';
+import { ArrowDown, Download, FileText } from 'lucide-react';
 import type { CSSProperties } from 'react';
 import { site, socials } from '@/content/site';
+import type { ResumeLinks } from '@/lib/resume';
 import { AvailabilityBadge } from '../ui/AvailabilityBadge';
 import { ButtonLink } from '../ui/Button';
 import { Container } from '../ui/Container';
@@ -15,7 +16,7 @@ const profile = [
   { term: 'Exploring', detail: 'AI agents and automation' },
 ];
 
-export function Hero({ resumeHref }: { resumeHref?: string }) {
+export function Hero({ resume }: { resume?: ResumeLinks }) {
   return (
     <section id="home" aria-labelledby="home-heading" className="relative isolate overflow-hidden">
       {/* Quiet texture: a dotted grid that fades out away from the top-right corner. */}
@@ -69,11 +70,17 @@ export function Hero({ resumeHref }: { resumeHref?: string }) {
                   aria-hidden="true"
                 />
               </ButtonLink>
-              {resumeHref ? (
-                <ButtonLink href={resumeHref} download variant="secondary">
-                  Download resume
-                  <Download className="size-4" aria-hidden="true" />
-                </ButtonLink>
+              {resume ? (
+                <>
+                  <ButtonLink href={resume.view} target="_blank" rel="noopener noreferrer" variant="secondary">
+                    View resume
+                    <FileText className="size-4" aria-hidden="true" />
+                  </ButtonLink>
+                  <ButtonLink href={resume.download} variant="ghost" aria-label="Download resume (PDF)">
+                    Download
+                    <Download className="size-4" aria-hidden="true" />
+                  </ButtonLink>
+                </>
               ) : null}
             </div>
 

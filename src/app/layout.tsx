@@ -5,7 +5,7 @@ import { RevealObserver } from '@/components/layout/RevealObserver';
 import { SiteFooter } from '@/components/layout/SiteFooter';
 import { SiteHeader } from '@/components/layout/SiteHeader';
 import { site } from '@/content/site';
-import { getResumeHref } from '@/lib/resume';
+import { getResumeLinks } from '@/lib/resume';
 import './globals.css';
 
 // Fonts are bundled in ./fonts (SIL Open Font License) so builds never depend on reaching Google Fonts.
@@ -64,7 +64,7 @@ export const viewport: Viewport = {
 const bootScript = `(function(){var d=document.documentElement;d.classList.add('js');try{if(localStorage.getItem('theme')==='light')d.classList.remove('dark')}catch(e){}})();`;
 
 export default function RootLayout({ children }: { children: ReactNode }) {
-  const resumeHref = getResumeHref();
+  const resume = getResumeLinks();
 
   return (
     <html
@@ -77,7 +77,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <script dangerouslySetInnerHTML={{ __html: bootScript }} />
       </head>
       <body>
-        <SiteHeader resumeHref={resumeHref} />
+        <SiteHeader resume={resume} />
         <main id="main" tabIndex={-1} className="focus:outline-none">
           {children}
         </main>

@@ -1,10 +1,11 @@
 'use client';
 
-import { Download, Menu, X } from 'lucide-react';
+import { Download, FileText, Menu, X } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { type CSSProperties, useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { navigation, site, socials } from '@/content/site';
+import type { ResumeLinks } from '@/lib/resume';
 import { cn } from '@/lib/utils';
 import { buttonClasses } from '../ui/Button';
 import { Container } from '../ui/Container';
@@ -43,7 +44,7 @@ function useActiveSection(enabled: boolean) {
   return enabled ? active : null;
 }
 
-export function SiteHeader({ resumeHref }: { resumeHref?: string }) {
+export function SiteHeader({ resume }: { resume?: ResumeLinks }) {
   const pathname = usePathname();
   const isHome = pathname === '/';
   const active = useActiveSection(isHome);
@@ -125,14 +126,15 @@ export function SiteHeader({ resumeHref }: { resumeHref?: string }) {
         </nav>
 
         <div className="flex items-center gap-1.5">
-          {resumeHref ? (
+          {resume ? (
             <a
-              href={resumeHref}
-              download
+              href={resume.view}
+              target="_blank"
+              rel="noopener noreferrer"
               className={cn(buttonClasses({ variant: 'secondary', size: 'sm' }), 'hidden sm:inline-flex')}
             >
               Resume
-              <Download className="size-3.5" strokeWidth={2} aria-hidden="true" />
+              <FileText className="size-3.5" strokeWidth={2} aria-hidden="true" />
             </a>
           ) : null}
           <ThemeToggle />
@@ -174,11 +176,22 @@ export function SiteHeader({ resumeHref }: { resumeHref?: string }) {
             </ul>
           </nav>
           <div className="mt-10 space-y-6">
-            {resumeHref ? (
-              <a href={resumeHref} download className={cn(buttonClasses({ variant: 'primary' }), 'w-full')}>
-                Download resume
-                <Download className="size-4" aria-hidden="true" />
-              </a>
+            {resume ? (
+              <div className="grid grid-cols-2 gap-3">
+                <a
+                  href={resume.view}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={cn(buttonClasses({ variant: 'primary' }), 'w-full')}
+                >
+                  View resume
+                  <FileText className="size-4" aria-hidden="true" />
+                </a>
+                <a href={resume.download} className={cn(buttonClasses({ variant: 'secondary' }), 'w-full')}>
+                  Download
+                  <Download className="size-4" aria-hidden="true" />
+                </a>
+              </div>
             ) : null}
             <ul className="flex gap-5 text-ink-muted">
               {socials.map((social) => (

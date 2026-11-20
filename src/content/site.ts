@@ -15,10 +15,11 @@ export const site = {
   description:
     'Satish Nikale is a Full-Stack Software Engineer and Founding Engineer at EzyEV Technologies in Pune, building production applications, backend systems and APIs with React, Next.js, Node.js and PostgreSQL.',
   /**
-   * Path inside /public. Drop your resume PDF at this location and every
-   * "Resume" button on the site appears automatically.
+   * Google Drive share link to your resume PDF, e.g.
+   * https://drive.google.com/file/d/<FILE_ID>/view?usp=sharing
+   * Sharing must be "Anyone with the link". Leave empty to hide every resume button.
    */
-  resumePath: '/Satish_Nikale_Resume.pdf',
+  resumeDriveUrl: 'https://drive.google.com/file/d/1cXf9w_TLIdvhomlZQbNWEEJKSNfi-7gx/view?usp=sharing',
   availability: {
     openToRoles: true,
     openToFreelance: true,
